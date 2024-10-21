@@ -1,24 +1,39 @@
 import { generateRandomString } from "@/utils/miscUtils";
 import { NextApiRequest, NextApiResponse } from 'next';
+import { redirect } from 'next/navigation'
 
-const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
-// const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET ;
+const { SPOTIFY_CLIENT_ID, REDIRECT_URI } = process.env;
 
-const scope =   "streaming \
-                user-read-email \
-                user-read-private"
+// These are the application scopes you will be request from each user logging in
+const scopes = [
+    'streaming',
+    'user-read-playback-state',
+    'user-read-email',
+    'user-read-private',
+    'playlist-read-private',
+    'playlist-modify-private',
+    'playlist-modify-public',
+];
 
-const state = generateRandomString(16);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
-    const auth_query_parameters = new URLSearchParams({
-        response_type: "code",
-        client_id: spotify_client_id,
-        scope: scope,
-        redirect_uri: "http://localhost:3000/auth/callback",
-        state: state
-    })
+const buildURL = (scopes: string[], callback: string) => {
+    return (
+        'https://accounts.spotify.com/authorize?' +
+        'response_type=code' +
+        `&client_id=${SPOTIFY_CLIENT_ID}` +
+        `&scope=${encodeURIComponent(scopes.join(' '))}` +
+        `&redirect_uri=${encodeURIComponent(callback)}` + 
+        `&state=${generateRandomString(16)}`
+    );
+};
 
-    res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+//FIXME - Potential error in redirect address not receiving a response 
+
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+    if ( req.method !== 'GET' ){
+        return
+    }
+    // Redirect all requests to Spotify auth
+    redirect(buildURL(scopes, REDIRECT_URI!));
 }
