@@ -1,8 +1,9 @@
-import { NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { serialize, SerializeOptions } from 'cookie';
+import { cookies } from 'next/headers';
 import Iron from '@hapi/iron';
 
-const { SPOTIFY_SESSION_SECRET } = process.env;
+const { SESSION_SECRET } = process.env;
 
 
 export interface UserSession {
@@ -17,16 +18,19 @@ export interface UserSession {
     }[];
     };
     token: {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-    refresh_token: string;
-    scope: string;
+        access_token: string;
+        token_type: string;
+        expires_in: number;
+        refresh_token: string;
+        scope: string;
     };
 }
 
+//FIXME - Failed to seal session object TypeError: Cannot read properties of undefined (reading 'set')
+// Make sure that session is not undefined
+
 export async function setAuthCookie (
-    res: NextApiResponse,
+    res: NextResponse,
     session: UserSession,
     options: SerializeOptions = {},
 ) {
@@ -44,7 +48,7 @@ export async function setAuthCookie (
     // .env file.
     const signedSession = await Iron.seal(
         session,
-        SPOTIFY_SESSION_SECRET!,
+        SESSION_SECRET,
         Iron.defaults,
     );
 
@@ -59,7 +63,23 @@ export async function setAuthCookie (
     }
 
     // Set the cookie in the header of the response
-    res.setHeader('Set-Cookie', serialize('auth.session', stringValue, opts));
+    // res.setHeader('Set-Cookie', serialize('auth.session', stringValue, opts));
+
+    // const cookieStore = await cookies();
+
+    // cookieStore().set('auth.session', serialize('auth.session', stringValue, opts))
+
+    // res.setHeader('Set-cookie', serialize('auth.session', stringValue, opts))
+    res.headers.set('Set-cookie', serialize('auth.session', stringValue, opts))
+
+    return res
+
+    // return new NextResponse(
+    //     headers: {
+    //         'Set-cookie': serialize('auth.session', stringValue, opts)
+    //     }
+    // )
+
     } catch (error) {
     console.error('Failed to seal session object', error);
     return;

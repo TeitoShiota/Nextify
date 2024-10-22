@@ -1,5 +1,7 @@
 import querystring from 'querystring';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import { redirect } from 'next/navigation';
+
 
 import createSpotifyApi from '@/utils/spotify';
 
@@ -10,32 +12,52 @@ import { setAuthCookie } from '@/utils/cookies';
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, REDIRECT_URI } = process.env;
 
 
+export interface UserSession {
+    user: {
+    id: string;
+    display_name: string;
+    email: string;
+    images: {
+        width: number;
+        height: number;
+        url: string;
+    }[];
+    };
+    token: {
+        access_token: string;
+        token_type: string;
+        expires_in: number;
+        refresh_token: string;
+        scope: string;
+    };
+}
+
 
 function sendRefreshRedirect(res: NextResponse, path = '/') {
-    res.status(200);
+    // res.status(200);
     // Send a 200 response and refresh the page
-    return res.send(
-        `<html><head><meta http-equiv="refresh" content=1;url="${path}"></head></html>`,
-    );
+    // return res.send(
+    //     `<html><head><meta http-equiv="refresh" content=1;url="${path}"></head></html>`,
+    // );
+    redirect(path);
 };
 
 
 //FIXME - Potential invalid response 
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    
+export async function GET(req: NextRequest, res: NextResponse) {
 
-    const code = req.query.code as string
-    const state = req.query.state as string
+    const code = req.nextUrl.searchParams.get('code') as string
+    const state = req.nextUrl.searchParams.get('state') as string
     
     console.log(code)
 
 
     if (!code) {
-        return res.status(400).json({
-            statusCode: 400,
-            message: 'Missing code parameter',
-        });
+        return new NextResponse(
+            JSON.stringify({ error: 'Missing code parameter' }),
+            { status: 400 }
+        );
     }
 
 
@@ -55,6 +77,8 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 
         const data = await response.json();
 
+        console.log(data)
+
         if (!response.ok) {
             throw new Error(data.error || 'Failed to fetch access token');
         }
@@ -62,11 +86,13 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
         const spotify = createSpotifyApi(data.access_token);
     
         const profile = await spotify.getMe();
+
+        console.log(profile)
     
         const session = {
-            user: profile,
+            user: profile.body,
             token: data,
-        };
+        } as UserSession;
     
         // Send the session information to our user in the form of a cookie header.
         // We'll describe this function in the next step
@@ -81,13 +107,10 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 
         console.error(error)
 
-        return res.status(500).json({ error: 'Something went wrong' })
-
-
-
-        // return res.status(500).json({
-        //     statusCode: 500,
-        //     message: 'Something went wrong',
-        // });
+        // return res.status(500).json({ error: 'Something went wrong' })
+        return new NextResponse(
+            JSON.stringify({ error: error.message }),
+            { status: 500 }
+        );
     }
 }

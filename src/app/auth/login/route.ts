@@ -6,13 +6,13 @@ const { SPOTIFY_CLIENT_ID, REDIRECT_URI } = process.env;
 
 // These are the application scopes you will be request from each user logging in
 const scopes = [
-    'streaming',
-    'user-read-playback-state',
+    // 'streaming',
+    // 'user-read-playback-state',
     'user-read-email',
     'user-read-private',
-    'playlist-read-private',
-    'playlist-modify-private',
-    'playlist-modify-public',
+    // 'playlist-read-private',
+    // 'playlist-modify-private',
+    // 'playlist-modify-public',
 ];
 
 
