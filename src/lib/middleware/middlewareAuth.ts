@@ -3,8 +3,8 @@ import { cookies } from 'next/headers'
 import { unsealSessionCookies } from '@/lib/session/session'
 import { verifySession } from '@/lib/dal';
 
-export async function checkSession(request: NextRequest) {
-    const response = NextResponse.next({
+export async function checkSession(request: NextRequest): Promise<NextResponse<unknown>> {
+    const response : NextResponse = NextResponse.next({
         request
     })
 

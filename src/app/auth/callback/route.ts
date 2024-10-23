@@ -1,25 +1,17 @@
-import querystring from 'querystring';
 import { NextRequest, NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
 
-// UTILS
-import createSpotifyApi from '@/utils/spotify';
+// import createSpotifyApi from '@/utils/spotify';
 import { setAuthCookie } from '@/utils/cookies';
+import { getAccessToken } from '@/lib/spotify/getAccessToken'
 
 // TYPES
 import { UserSession } from '@/types/types';
+import { getSpotifyProfile } from '@/lib/spotify/spotifyApi';
 
-// ENVIRONMENT VARIABLES
-const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, REDIRECT_URI } = process.env;
+//TODO - Remove Refresh token from data and save refresh token separately
 
-
-//FIXME - Potential invalid response 
-
-export async function GET(req: NextRequest, res: NextResponse) {
-
+export async function GET( req: NextRequest ) {
     const code = req.nextUrl.searchParams.get('code') as string
-    const state = req.nextUrl.searchParams.get('state') as string
-
 
     if (!code) {
         return new NextResponse(
@@ -28,38 +20,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
         );
     }
 
-
     try {
-        const response = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64'),
-            },
-            body: querystring.stringify({
-                code: code as string,
-                redirect_uri: REDIRECT_URI!,
-                grant_type: 'authorization_code',
-            }),
-        });
+        const data = await getAccessToken( await code )
+        const profile = await getSpotifyProfile( data.access_token )
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to fetch access token');
-        }
-
-        const spotify = createSpotifyApi(data.access_token);
-
-        const profile = await spotify.getMe();
-    
         const session = {
-            user: profile.body,
-            token: data,
+            user: await profile,
+            token: await data,
         } as UserSession;
     
-        // Send the session information to our user in the form of a cookie header.
-        // We'll describe this function in the next step
         await setAuthCookie(
             session,
             {

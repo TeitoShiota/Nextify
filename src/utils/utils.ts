@@ -1,5 +1,6 @@
-import { generateRandomString } from '@/utils/miscUtils'
+import { generateRandomString, buildSpotifyAuthURL } from '@/utils/miscUtils'
 
 export { 
     generateRandomString,
+    buildSpotifyAuthURL,
 }
