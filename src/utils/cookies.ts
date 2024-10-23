@@ -1,39 +1,24 @@
 import { NextResponse } from 'next/server';
 import { serialize, SerializeOptions } from 'cookie';
 import { cookies } from 'next/headers';
-import Iron from '@hapi/iron';
 
-const { SESSION_SECRET } = process.env;
+import { UserSession } from '@/types/types';
+import { sealSessionCookies } from '@/lib/session/session';
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
-export interface UserSession {
-    user: {
-    id: string;
-    display_name: string;
-    email: string;
-    images: {
-        width: number;
-        height: number;
-        url: string;
-    }[];
-    };
-    token: {
-        access_token: string;
-        token_type: string;
-        expires_in: number;
-        refresh_token: string;
-        scope: string;
-    };
+if (!SESSION_SECRET) {
+    throw new Error('SESSION_SECRET is not defined in environment variables');
 }
+
 
 //FIXME - Failed to seal session object TypeError: Cannot read properties of undefined (reading 'set')
 // Make sure that session is not undefined
 
 export async function setAuthCookie (
-    res: NextResponse,
     session: UserSession,
     options: SerializeOptions = {},
-) {
+): Promise<void> {
     const defaults: SerializeOptions = {
         maxAge: 3600 * 1000 * 5,
         httpOnly: true,
@@ -44,44 +29,21 @@ export async function setAuthCookie (
     const opts: SerializeOptions = { ...defaults, ...options };
 
     try {
-    // We're encrypting our session here using the SESSION_SECRET defined in our
-    // .env file.
-    const signedSession = await Iron.seal(
-        session,
-        SESSION_SECRET,
-        Iron.defaults,
-    );
 
-    const stringValue =
-        typeof signedSession === 'object'
-        ? 'j:' + JSON.stringify(signedSession)
-        : String(signedSession);
+        if ('maxAge' in opts) {
+            opts.expires = new Date(Date.now() + opts.maxAge!);
+            opts.maxAge! /= 1000;
+        }
 
-    if ('maxAge' in opts) {
-        opts.expires = new Date(Date.now() + opts.maxAge!);
-        opts.maxAge! /= 1000;
-    }
+        const cookieStore = await cookies()
 
-    // Set the cookie in the header of the response
-    // res.setHeader('Set-Cookie', serialize('auth.session', stringValue, opts));
+        // Set the cookie
+        cookieStore.set('auth.session', await sealSessionCookies(session), opts)
 
-    // const cookieStore = await cookies();
-
-    // cookieStore().set('auth.session', serialize('auth.session', stringValue, opts))
-
-    // res.setHeader('Set-cookie', serialize('auth.session', stringValue, opts))
-    res.headers.set('Set-cookie', serialize('auth.session', stringValue, opts))
-
-    return res
-
-    // return new NextResponse(
-    //     headers: {
-    //         'Set-cookie': serialize('auth.session', stringValue, opts)
-    //     }
-    // )
+        return
 
     } catch (error) {
-    console.error('Failed to seal session object', error);
+        console.error('Failed to seal session object', error);
     return;
     }
 };
