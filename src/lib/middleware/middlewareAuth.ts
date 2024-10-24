@@ -1,6 +1,4 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { cookies } from 'next/headers'
-import { unsealSessionCookies } from '@/lib/session/session'
 import { verifySession } from '@/lib/dal';
 
 export async function checkSession(request: NextRequest): Promise<NextResponse<unknown>> {
@@ -8,14 +6,34 @@ export async function checkSession(request: NextRequest): Promise<NextResponse<u
         request
     })
 
-    // const cookie = (await cookies()).get('session')?.value
-    // const session = await unsealSessionCookies(cookie)
 
-    // if ( await !session.user.id ) {
-    //     const url = request.nextUrl.clone()
-    //     url.pathname = '/login'
-    //     return NextResponse.redirect(url)
-    // }
+    // if ( request.nextUrl.pathname === '/auth/login' ){ return response }
+    const isAuth = await verifySession();
+
+    try {
+        if ( ( isAuth ).isAuth && request.nextUrl.pathname === '/login' ){
+            const url = request.nextUrl.clone()
+            url.pathname = '/'
+            return NextResponse.redirect(url)
+        }
+    } catch ( error ) {
+        throw new Error( error );
+    }
+
+    try {
+        if ( 
+            request.nextUrl.pathname !== '/login' &&
+            request.nextUrl.pathname !== '/auth/login' &&
+            request.nextUrl.pathname !== '/auth/callback' &&
+            !(isAuth).isAuth
+        ){
+            const url = request.nextUrl.clone()
+            url.pathname = '/login'
+            return NextResponse.redirect(url)
+        }
+    } catch ( error ) {
+        throw new Error( error );
+    }
 
 
     return response

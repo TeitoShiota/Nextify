@@ -1,14 +1,39 @@
-import Iron from '@hapi/iron';
+import 'server-only'
 
 import { UserSession } from '@/types/types';
+import { getIronSession, sealData, unsealData } from 'iron-session';
+import { cookies } from 'next/headers';
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
-export async function sealSessionCookies(session : UserSession){
-    const signedSession = await Iron.seal(
-        await session,
-        await SESSION_SECRET,
-        Iron.defaults,
+//STUB - 
+export async function getIronSessionData(session : UserSession){
+    try {
+        const session = await getIronSession( cookies(), { password: SESSION_SECRET, cookieName: 'auth.session' } );
+        return session;
+    } catch ( error ) {
+        throw new Error( error );
+    }
+}
+
+
+//STUB - 
+export async function setIronSessionData( newSession : UserSession ){
+    try {
+        const session = await getIronSession( cookies(), { password: SESSION_SECRET, cookieName: 'auth.session' } );
+        // session.session = newSession
+        return session;
+    } catch ( error ) {
+        throw new Error( error );
+    }
+}
+
+export async function sealSessionCookies(session : UserSession): Promise< string >{
+    const signedSession = await sealData(
+        session,
+        {
+            password: await SESSION_SECRET
+        },
     );
 
     const stringValue =
@@ -19,12 +44,48 @@ export async function sealSessionCookies(session : UserSession){
     return stringValue;
 }
 
-export async function unsealSessionCookies( encryptedSessionCookies ){
-    const unsealedSession = await Iron.unseal(
-        encryptedSessionCookies,
-        SESSION_SECRET,
-        Iron.defaults
-    );
+export async function unsealSessionCookies( encryptedSessionCookies ): Promise< UserSession >{
+    try {
+        const unsealedSession = await unsealData(
+            encryptedSessionCookies,
+            { 
+                password: await SESSION_SECRET
+            },
+        );
+        console.log( unsealedSession )
 
-    return await unsealedSession;
+        return unsealedSession as UserSession;
+    } catch ( error ) {
+        throw new Error( error )
+    }
 }
+
+
+// export async function sealSessionCookies(session : UserSession){
+//     const signedSession = await Iron.seal(
+//         await session,
+//         await SESSION_SECRET,
+//         Iron.defaults,
+//     );
+
+//     const stringValue =
+//         typeof signedSession === 'object'
+//         ? 'j:' + JSON.stringify(signedSession)
+//         : String(signedSession);
+
+//     return stringValue;
+// }
+
+// export async function unsealSessionCookies( encryptedSessionCookies ){
+//     try {
+//         const unsealedSession = await Iron.unseal(
+//             encryptedSessionCookies,
+//             SESSION_SECRET,
+//             // Iron.defaults
+//         );
+
+//         return unsealedSession;
+//     } catch ( error ) {
+//         throw new Error( error )
+//     }
+// }
