@@ -1,0 +1,41 @@
+:root {
+--primary_background_color: rgb(255, 255, 255);
+--secondary_background_color: rgb(255, 17, 104);
+--primary_text_color: rgb(52, 25, 49);
+--secondary_text_color: rgb(255, 255, 255);
+
+// Category colors
+--category_pink: rgb(215, 0, 96);
+--category_dark_pink: rgb(255, 17, 104);
+--category_orange: rgb(229, 64, 40);
+--category_light_orange: rgb(241, 141, 5);
+--category_yellow: rgb(242, 188, 6);
+--category_light_green: rgb(94, 177, 28);
+--category_green: rgb(58, 118, 52);
+--category_light_blue: rgb(10, 190, 190);
+--category_blue: rgb(0, 161, 203);
+--category_dark_blue: rgb(17, 87, 147);
+}
+
+
+[data-theme="dark"] {
+    --primary_background_color: rgb(52, 25, 49);
+    --secondary_background_color: rgb(17, 22, 37);
+
+    --primary_text_color: rgb(255, 255, 255);
+    --secondary_text_color: #FF1168;
+
+}
+
+body {
+    background-color: var(--primary_background_color);
+}
+
+// :root{
+//     --background: 
+// }
+
+@mixin heading_gradient{
+    background: $category_pink;
+    background: linear-gradient(140deg, $category_pink 0%, $category_orange 50%, $category_light_orange 100%);
+}
