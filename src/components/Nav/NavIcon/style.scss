@@ -1,0 +1,6 @@
+.nav-icon {
+    > [data-active='active'] {
+        fill: var(--primary_text_color) ;
+        color: var(--primary_text_color) ;
+    }
+}

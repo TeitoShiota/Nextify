@@ -17,9 +17,9 @@ const nextConfig = {
             },
         ];
     },
-    sassOptions: {
-        includePaths: ['styles'],
-    }
+    // sassOptions: {
+    //     includePaths: ['styles'],
+    // }
 };
 
 export default nextConfig;

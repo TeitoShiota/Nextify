@@ -1,0 +1,28 @@
+.primary-nav {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+
+    width: 100dvw;
+    padding: 1rem 0;
+    
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+
+    background-color: var(--secondary_background_color);
+    -webkit-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
+    -moz-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
+    
+
+    > * {
+        color: aqua;
+    }
+
+    > [data-active='active'] {
+        color: var(--primary_text_color);
+    }
+
+}
