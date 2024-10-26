@@ -3,6 +3,8 @@
     --secondary_background_color: rgb(255, 255, 255);
     --primary_color: rgb(52, 25, 49);
     --secondary_color: rgb(255, 255, 255);
+    --primary_color_inverted: rgb(255, 255, 255);
+
 
     // Category colors
     --category_pink: rgb(215, 0, 96);
@@ -25,9 +27,11 @@
     --primary_color: rgb(255, 255, 255);
     --secondary_color: #FF1168;
 
+    --primary_color_inverted: rgb(52, 25, 49);
+
 }
 
 @mixin heading_gradient{
-    background: $category_pink;
-    background: linear-gradient(140deg, $category_pink 0%, $category_orange 50%, $category_light_orange 100%);
+    background: var(--category_pink);
+    background: linear-gradient(140deg, var(--category_pink) 0%, var(--category_orange) 50%, var(--category_light_orange) 100%);
 }

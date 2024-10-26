@@ -1,0 +1,44 @@
+.login-page__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100dvh;
+
+    padding: 0 1rem;
+
+    > .login-page__main__logo {
+        width: 60%;
+        height: auto;
+    }
+
+    > .login-page__main__heading {
+        margin-top: 1.25rem;
+
+        color: var(--primary_text_color);
+        font-size: clamp( 2rem, 12dvw, 6rem );
+        text-transform: uppercase;
+    }
+
+    > .login-page__main__login-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: clamp( 150px, 60dvw, 350px );
+        padding: 1rem 0;
+        // margin-top: 3rem;
+
+
+        border: 0.4rem solid var(--category_pink);
+        border-radius: 2.5rem;
+        background-color: transparent;
+
+        font-size: 1.5rem;
+        text-transform: uppercase;
+
+        transform: translateY(4rem);
+    }
+
+}

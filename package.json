@@ -14,7 +14,6 @@
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
-    "sass": "^1.80.3",
     "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
@@ -27,6 +26,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "next-themes": "^0.3.0",
+    "sass": "^1.80.4",
     "typescript": "^5"
   }
 }

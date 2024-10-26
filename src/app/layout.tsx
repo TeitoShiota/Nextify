@@ -4,8 +4,6 @@ import { ThemeProvider } from 'next-themes'
 
 // import '@/styles/_colors.scss';
 import "@/styles/globals.scss";
-import Header from "@/containers/Header";
-import Nav from "@/containers/Nav";
 
 export const metadata: Metadata = {
 	title: "Nextify",
@@ -21,9 +19,7 @@ export default function RootLayout({
 	<html lang="en">
 		<body>
 			<ThemeProvider>
-				<Header />
 				{children}
-				<Nav />
 			</ThemeProvider>
 		</body>
 	</html>

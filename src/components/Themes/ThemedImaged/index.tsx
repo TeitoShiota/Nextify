@@ -1,12 +1,16 @@
+'use client';
+
 import Image, { StaticImageData } from 'next/image'
 import { useTheme } from 'next-themes'
 
 export default function ThemedImage(
-    { 
+    {
+        className,
         src_light,
         src_dark,
         alt 
     } : {
+        className?: string,
         src_light: StaticImageData | string ,
         src_dark: StaticImageData | string,
         alt : string,
@@ -29,6 +33,7 @@ export default function ThemedImage(
 
     return (
         <Image
+            className={ className ? className : null}
             src={ src }
             width={400}
             height={400}

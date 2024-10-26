@@ -1,0 +1,29 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@mixin heading-font($weight: 700, $size: 2rem, $line-height: auto) {
+    font-family: 'Poppins', sans-serif;
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $line-height;
+}
+
+@mixin paragraph-font($weight: light, $size: 0.9375rem, $line-height: 1.5) {
+    font-family: 'Poppins', sans-serif;
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $line-height;
+}
+
+@mixin anchor-font($weight: 500, $size: 1rem, $line-height: 1.5) {
+    font-family: 'Poppins', sans-serif;
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $line-height;
+    text-decoration: none;
+    color: var(--primary_text_color);
+    
+    &:hover {
+        text-decoration: none;
+    }
+}

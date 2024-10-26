@@ -17,9 +17,10 @@ const nextConfig = {
             },
         ];
     },
-    // sassOptions: {
-    //     includePaths: ['styles'],
-    // }
+    sassOptions: {
+        // includePaths: ['styles'],
+        prependData: `@import "./src/styles/_colors";`
+    }
 };
 
 export default nextConfig;
