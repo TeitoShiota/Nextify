@@ -35,11 +35,11 @@ const TYPE_MAP = {
     },
 }
 
-export default function NavIcoc({ type, href, active } : { type : string, href : string, active? : boolean }) {
+export default function NavIcoc({ type, href, active, backdrop } : { type : string, href : string, active? : boolean, backdrop?: boolean }) {
     return (
         <Link 
             href={ href }
-            className='nav-icon'
+            className={`nav-icon` + backdrop ? `nav-icon-backdrop` : null }
         >
             <Image
                 src={ TYPE_MAP[ type ].icon }

@@ -2,6 +2,7 @@
     display: flex;
     flex: 1 1 auto;
     justify-content: space-around;
+    align-items: center;
     flex-wrap: nowrap;
 
     width: 100dvw;
@@ -15,7 +16,23 @@
     -webkit-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
     -moz-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.15);
+
+
     
+    // span {
+
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     @include heading_gradient();
+
+    //     > * {
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //     } 
+    //     // background-color: ;
+    // }
 
     > * {
         color: aqua;

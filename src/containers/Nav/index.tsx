@@ -10,7 +10,7 @@ export default function Nav() {
         <nav className="primary-nav">
             <NavIcon type='PulseIcon' href='/' active/>
             <NavIcon type='MicrophoneIcon' href='/' />
-            <NavIcon type='WifiIcon' href='/' />
+            <NavIcon type='WifiIcon' href='/' backdrop/>
             <NavIcon type='ContrastIcon' href='/' />
             <NavIcon type='SettingsIcon' href='/' />
         </nav>

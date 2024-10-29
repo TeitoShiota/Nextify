@@ -1,4 +1,21 @@
 .nav-icon {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > * {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } 
+
+    &{
+        padding: 0.5rem;
+        @include heading_gradient();
+        border-radius: 2.5rem;
+    }
+
+
     > [data-active='active'] {
         fill: var(--primary_text_color) ;
         color: var(--primary_text_color) ;
