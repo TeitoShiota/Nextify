@@ -35,7 +35,7 @@ const TYPE_MAP = {
     },
 }
 
-export default function NavIcoc({ type, href, active, backdrop } : { type : string, href : string, active? : boolean, backdrop?: boolean }) {
+export default function NavIcon({ type, href, active, backdrop } : { type : string, href : string, active? : boolean, backdrop?: boolean }) {
     return (
         <Link 
             href={ href }
