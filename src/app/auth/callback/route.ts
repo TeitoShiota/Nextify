@@ -5,7 +5,7 @@ import { setAuthCookie } from '@/utils/cookies';
 import { getAccessToken } from '@/lib/spotify/getAccessToken'
 
 // TYPES
-import { UserSession } from '@/types/types';
+import { UserSession } from '../../../../types/types';
 import { getSpotifyProfile } from '@/lib/spotify/spotifyApi';
 
 //TODO - Remove Refresh token from data and save refresh token separately

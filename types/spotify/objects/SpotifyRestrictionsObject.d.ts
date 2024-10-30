@@ -1,0 +1,3 @@
+type SpotifyRestrictionsObject = {
+    reason: string;
+};

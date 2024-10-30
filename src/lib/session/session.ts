@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { UserSession } from '@/types/types';
+import { UserSession } from '../../../types/types';
 import { getIronSession, sealData, unsealData } from 'iron-session';
 import { cookies } from 'next/headers';
 

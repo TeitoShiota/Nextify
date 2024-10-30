@@ -1,7 +1,7 @@
 import { SerializeOptions } from 'cookie';
 import { cookies } from 'next/headers';
 
-import { UserSession } from '@/types/types';
+import { UserSession } from '../../types/types';
 import { sealSessionCookies } from '@/lib/session/session';
 
 const SESSION_SECRET = process.env.SESSION_SECRET;

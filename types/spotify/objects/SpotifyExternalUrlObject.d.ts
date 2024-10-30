@@ -1,0 +1,3 @@
+type SpotifyExternalUrlObject = {
+    spotify: string;
+}

@@ -2,7 +2,7 @@ import querystring from 'querystring';
 
 
 // TYPES
-import { SpotifyRefreshTokenResponse } from '@/types/types';
+import { SpotifyRefreshTokenResponse } from '../../../types/types';
 
 
 // ENVIRONMENT VARIABLES

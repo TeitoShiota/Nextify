@@ -1,7 +1,7 @@
 import querystring from 'querystring';
 
 // TYPES
-import { SpotifyAccessTokenResponse } from '@/types/types';
+import { SpotifyAccessTokenResponse } from '../../../types/types';
 
 // ENVIRONMENT VARIABLES
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, REDIRECT_URI } = process.env;

@@ -3,7 +3,7 @@ import 'server-only'
 // import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { unsealSessionCookies } from '@/lib/session/session'
-import { UserSession } from '@/types/UserSessionInterfaces'
+import { UserSession } from '../../types/UserSessionInterfaces'
 
 export async  function verifySession(){
     try {
