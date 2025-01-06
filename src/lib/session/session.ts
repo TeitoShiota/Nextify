@@ -59,33 +59,3 @@ export async function unsealSessionCookies( encryptedSessionCookies ): Promise< 
         throw new Error( error )
     }
 }
-
-
-// export async function sealSessionCookies(session : UserSession){
-//     const signedSession = await Iron.seal(
-//         await session,
-//         await SESSION_SECRET,
-//         Iron.defaults,
-//     );
-
-//     const stringValue =
-//         typeof signedSession === 'object'
-//         ? 'j:' + JSON.stringify(signedSession)
-//         : String(signedSession);
-
-//     return stringValue;
-// }
-
-// export async function unsealSessionCookies( encryptedSessionCookies ){
-//     try {
-//         const unsealedSession = await Iron.unseal(
-//             encryptedSessionCookies,
-//             SESSION_SECRET,
-//             // Iron.defaults
-//         );
-
-//         return unsealedSession;
-//     } catch ( error ) {
-//         throw new Error( error )
-//     }
-// }
